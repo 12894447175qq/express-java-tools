@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>club.mrxiao</groupId>
+    <groupId>com.hyl</groupId>
     <artifactId>express-java-tools</artifactId>
     <packaging>pom</packaging>
     <version>1.0.2</version>
@@ -27,18 +27,6 @@
         </license>
     </licenses>
 
-    <scm>
-        <connection>scm:git@github.com:mr-xiaoyu/express-java-tools.git</connection>
-        <developerConnection>scm:git@github.com:mr-xiaoyu/express-java-tools.git</developerConnection>
-        <url>https://github.com/mr-xiaoyu/express-java-tools</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>mrxiao</name>
-            <email>304491159@qq.com</email>
-        </developer>
-    </developers>
 
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -49,7 +37,7 @@
         <lombok.version>1.18.8</lombok.version>
         <guava.version>20.0</guava.version>
         <gson.version>2.8.0</gson.version>
-        <hutool.version>4.6.2</hutool.version>
+        <hutool.version>5.6.5</hutool.version>
     </properties>
 
     <dependencyManagement>
