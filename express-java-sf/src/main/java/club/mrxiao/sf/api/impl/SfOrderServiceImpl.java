@@ -21,6 +21,7 @@ import java.util.List;
  * <pre>
  * 顺丰订单api接口实现
  * </pre>
+ *
  * @author <a href="https://github.com/mr-xiaoyu">xiaoyu</a>
  * @since 2021-02-14
  */
@@ -31,19 +32,19 @@ public class SfOrderServiceImpl implements SfOrderService {
 
     @Override
     public CreateOrderResponse createOrder(CreateOrderRequest request) throws ExpressErrorException {
-        BaseRequest r = new BaseRequest(request.getServiceCode(),request.toJson());
+        BaseRequest r = new BaseRequest(request.getServiceCode(), request.toJson());
         return CreateOrderResponse.fromJson(this.sfService.post(r));
     }
 
     @Override
     public OrderRespResponse orderResp(OrderRespRequest request) throws ExpressErrorException {
-        BaseRequest r = new BaseRequest(request.getServiceCode(),request.toJson());
+        BaseRequest r = new BaseRequest(request.getServiceCode(), request.toJson());
         return OrderRespResponse.fromJson(this.sfService.post(r));
     }
 
     @Override
     public UpdateOrderResponse updateOrder(UpdateOrderRequest request) throws ExpressErrorException {
-        BaseRequest r = new BaseRequest(request.getServiceCode(),request.toJson());
+        BaseRequest r = new BaseRequest(request.getServiceCode(), request.toJson());
         return UpdateOrderResponse.fromJson(this.sfService.post(r));
     }
 
@@ -56,11 +57,11 @@ public class SfOrderServiceImpl implements SfOrderService {
         List<String> s = new ArrayList<>();
         List<WaybillNoInfo> waybillNoInfoList = response.getWaybillNoInfoList();
         for (WaybillNoInfo info : waybillNoInfoList) {
-            if(1 == info.getWaybillType()){
+            if (1 == info.getWaybillType()) {
                 w = info.getWaybillNo();
-            }else if(2 == info.getWaybillType()){
+            } else if (2 == info.getWaybillType()) {
                 s.add(info.getWaybillNo());
-            }else {
+            } else {
                 b = info.getWaybillNo();
             }
         }
@@ -68,7 +69,7 @@ public class SfOrderServiceImpl implements SfOrderService {
         List<RouteLabelInfo> routeLabelInfo = response.getRouteLabelInfo();
         List<PrintSfOrderDocument> documents = new ArrayList<>();
         for (RouteLabelInfo labelInfo : routeLabelInfo) {
-            if(!"1000".equals(labelInfo.getCode())){
+            if (!"1000".equals(labelInfo.getCode())) {
                 throw new ExpressErrorException(ExpressError.builder()
                         .errorCode(labelInfo.getCode())
                         .errorMsg(labelInfo.getMessage())
@@ -77,11 +78,11 @@ public class SfOrderServiceImpl implements SfOrderService {
             }
             RouteLabelData data = labelInfo.getRouteLabelData();
             PrintSfOrderDocument document = new PrintSfOrderDocument();
-            if(StrUtil.isNotBlank(b)){
+            if (StrUtil.isNotBlank(b)) {
                 document.setBackWaybillNo(b);
-            }else{
+            } else {
                 document.setMasterWaybillNo(w);
-                if(s.contains(data.getWaybillNo())){
+                if (s.contains(data.getWaybillNo())) {
                     document.setBranchWaybillNo(data.getWaybillNo());
                 }
             }
@@ -102,11 +103,17 @@ public class SfOrderServiceImpl implements SfOrderService {
             document.setSourceTransferCode(data.getSourceTransferCode());
             document.setPrintIcons(new ArrayList<String>());
             documents.add(document);
-            seq ++;
+            seq++;
         }
         PrintSfOrderResponse r = new PrintSfOrderResponse(this.sfService.getConfig());
         r.setDocuments(documents);
         r.setCommond("print");
         return r;
+    }
+
+    @Override
+    public QuerySFWaybillResponse querySFWaybill(QuerySFWaybillRequest request) throws ExpressErrorException {
+        BaseRequest r = new BaseRequest(request.getServiceCode(), request.toJson());
+        return QuerySFWaybillResponse.fromJson(this.sfService.post(r));
     }
 }
