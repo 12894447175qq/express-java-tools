@@ -4,7 +4,7 @@ package club.mrxiao.common.error;
  * @author <a href="https://github.com/mr-xiaoyu">xiaoyu</a>
  * @since 2021-02-16
  */
-public class ExpressErrorException extends Exception {
+public class ExpressErrorException extends RuntimeException {
 
     private static final long serialVersionUID = 3264755162484009028L;
 
