@@ -25,14 +25,29 @@ public class BaseResultData<T> {
     private String errorCode;
 
     /**
+     * 发送请求中的ID,原封不动返回，使客户系统能识别出哪个请求对应的响应
+     */
+    private String requestId;
+
+    /**
      * 错误消息
      */
     private String errorMsg;
 
     /**
+     * 失败提示信息
+     */
+    private String errorMessage;
+
+    /**
      * 响应数据
      */
     private JsonElement msgData;
+
+    /**
+     * 响应数据
+     */
+    private JsonElement obj;
 
     public static BaseResultData fromJson(String json) {
         return SfGsonBuilder.create().fromJson(json, BaseResultData.class);

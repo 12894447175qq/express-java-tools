@@ -18,7 +18,7 @@ import java.util.Properties;
 public class ApiTestModule implements Module {
 
     private final Log log = LogFactory.get(this.getClass().getName());
-    private static final String TEST_CONFIG_PROPERTIES = "tset-config.properties";
+    private static final String TEST_CONFIG_PROPERTIES = "test-config-sample.properties";
 
     @Override
     public void configure(Binder binder) {

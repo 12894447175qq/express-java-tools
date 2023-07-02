@@ -105,4 +105,11 @@ public class SfOrderServiceImplTest {
         PrintSfOrderResponse response = this.sfService.getSfOrderService().getPrintData(request);
         log.info("【response】:\n {}", SfGsonBuilder.create().toJson(response));
     }
+
+
+    @Test
+    public void testGetMsgDigest() {
+        String data = "{\"language\":\"zh-CN\",\"orderId\":\"QIAO-20200618-004\"}";
+//        String msgDigest = sfService.getMsgDigest(data, );
+    }
 }

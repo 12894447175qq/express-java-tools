@@ -45,4 +45,18 @@ public interface SfService {
      * @return 顺丰路由服务
      */
     SfRoutesService getSfRoutesService();
+
+    /**
+     * @return
+     */
+    SfPrintService getSfPrintService();
+
+    /**
+     * 数据加密
+     * @param msgData
+     * @param timestamp
+     * @return
+     */
+//    String getMsgDigest(String msgData,long timestamp);
 }
+
