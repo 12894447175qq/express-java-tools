@@ -13,6 +13,7 @@ import java.util.HashMap;
  * <pre>
  * 统一请求对象
  * </pre>
+ *
  * @author <a href="https://github.com/mr-xiaoyu">xiaoyu</a>
  * @since 2021-02-14
  */
@@ -21,21 +22,33 @@ public class BaseRequest extends HashMap<String, Object> implements Serializable
     private static final long serialVersionUID = -3970454113165485881L;
 
 
-    public BaseRequest(String serviceCode,String msgData) {
+    public BaseRequest(String serviceCode, String msgData) {
         put("requestID", IdUtil.fastSimpleUUID());
         put("serviceCode", serviceCode);
         put("msgData", msgData);
     }
 
+    public BaseRequest() {
+
+    }
+
+    public void token(SfConfig config) {
+        this.put("PartnerID", config.getCode());
+        this.put("secret", config.getCheck());
+        this.put("grantType", "password");
+    }
 
     public void build(SfConfig config) throws ExpressErrorException {
         Long timestamp = DateUtil.currentSeconds();
-        String msgData = (String)this.get("msgData");
+        String msgData = (String) this.get("msgData");
 
-        this.put("PartnerID",config.getCode());
-        this.put("timestamp",timestamp);
+        this.put("PartnerID", config.getCode());
+        this.put("timestamp", timestamp);
 
-        String digest = DigestUtil.getDigest(msgData,timestamp,config.getCheck());
-        this.put("msgDigest",digest);
+        String digest = DigestUtil.getDigest(msgData, timestamp, config.getCheck());
+        this.put("msgDigest", digest);
+
     }
+
+
 }

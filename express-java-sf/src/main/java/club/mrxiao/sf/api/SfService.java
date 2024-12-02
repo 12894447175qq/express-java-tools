@@ -51,6 +51,13 @@ public interface SfService {
      */
     SfPrintService getSfPrintService();
 
+
+    /**
+     * 获取token
+     * @return token
+     */
+    String getToken();
+
     /**
      * 数据加密
      * @param msgData

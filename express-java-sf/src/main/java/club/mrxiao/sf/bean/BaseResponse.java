@@ -32,6 +32,12 @@ public class BaseResponse {
     private String apiResponseId;
 
     /**
+     * 访问令牌
+     */
+    @SerializedName("accessToken")
+    private String accessToken;
+
+    /**
      * 业务处理详细结果
      */
     private String apiResultData;

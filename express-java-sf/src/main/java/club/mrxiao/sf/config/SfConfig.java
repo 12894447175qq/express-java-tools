@@ -17,10 +17,14 @@ public class SfConfig {
      */
     private static final String PRO_URL = "https://sfapi.sf-express.com/std/service";
 
+    private static final String PRO_TOKEN_URL = "https://sfapi.sf-express.com/oauth2/accessToken";
+
     /**
      * 沙箱环境地址
      */
     private static final String BOX_URL = "https://sfapi-sbox.sf-express.com/std/service";
+
+    private static final String BOX_TOKEN_URL = "https://sfapi-sbox.sf-express.com/oauth2/accessToken";
 
     /**
      * 是否生产环境
@@ -70,5 +74,16 @@ public class SfConfig {
             return PRO_URL;
         }
         return BOX_URL;
+    }
+
+    /**
+     * 获取api地址
+     * @return api地址
+     */
+    public String getTokenUrl(){
+        if(this.pro){
+            return PRO_TOKEN_URL;
+        }
+        return BOX_TOKEN_URL;
     }
 }

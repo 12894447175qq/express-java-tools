@@ -1,24 +1,14 @@
 package club.mrxiao.sf.api.impl;
 
-import club.mrxiao.common.error.ExpressError;
-import club.mrxiao.common.error.ExpressErrorException;
-import club.mrxiao.common.error.SfErrorMsgEnum;
-import club.mrxiao.sf.api.SfOrderService;
-import club.mrxiao.sf.api.SfPrintService;
-import club.mrxiao.sf.api.SfRoutesService;
-import club.mrxiao.sf.api.SfService;
-import club.mrxiao.sf.bean.BaseRequest;
-import club.mrxiao.sf.bean.BaseResponse;
-import club.mrxiao.sf.bean.BaseResultData;
+import club.mrxiao.common.error.*;
+import club.mrxiao.sf.api.*;
+import club.mrxiao.sf.bean.*;
 import club.mrxiao.sf.config.SfConfig;
 import club.mrxiao.sf.util.json.SfGsonBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpRequest;
-import sun.misc.BASE64Encoder;
 
-import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.util.Objects;
 
 /**
@@ -63,6 +53,32 @@ public class SfServiceImpl implements SfService {
     }
 
     @Override
+    public String getToken() {
+        BaseRequest request = new BaseRequest();
+        request.token(this.sfConfig);
+        try {
+            String result = HttpRequest.post(this.sfConfig.getTokenUrl())
+                    .form(request)
+                    .header("Content-type", "application/x-www-form-urlencoded;charset=UTF-8")
+                    .execute().body();
+            if (StrUtil.isBlank(result)) {
+                throw new ExpressErrorException(ExpressError.builder().errorCode("9999").errorMsg("无响应内容").build());
+            }
+            BaseResponse response = BaseResponse.fromJson(result);
+            if (SfErrorMsgEnum.CODE_A1000.getCode().equals(response.getApiResultCode())) {
+                return response.getAccessToken();
+            }
+            throw new ExpressErrorException(ExpressError.builder()
+                    .errorCode(response.getApiResultCode())
+                    .errorMsg(response.getApiErrorMsg())
+                    .json(result)
+                    .build());
+        } catch (HttpException e) {
+            throw new ExpressErrorException(ExpressError.builder().errorCode("9999").errorMsg("接口请求发生错误").build(), e);
+        }
+    }
+
+    @Override
     public String post(BaseRequest request) throws ExpressErrorException {
         request.build(this.sfConfig);
         try {
@@ -98,19 +114,4 @@ public class SfServiceImpl implements SfService {
         }
     }
 
-//    @Override
-//    public String getMsgDigest(String msgData, long timestamp) {
-//        SfConfig config = this.getConfig();
-//        try {
-//            String toVerifyText = URLEncoder.encode(msgData + timestamp + config.getCheck(), "UTF-8");
-//            //进行Md5加密
-//            MessageDigest md5 = MessageDigest.getInstance("MD5");
-//            md5.update(toVerifyText.getBytes("UTF-8"));
-//            //通过BASE64生成数字签名
-//            return new BASE64Encoder().encode(md5.digest());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "";
-//    }
 }
